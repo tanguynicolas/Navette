@@ -2,7 +2,7 @@
 
 from fastapi import FastAPI
 
-from user.router import *
+from .user.router import router as user
 
 app = FastAPI()
 
@@ -10,4 +10,4 @@ app = FastAPI()
 def alive():
     return("I'm alive!")
 
-app.include_router(router)
+app.include_router(user)
