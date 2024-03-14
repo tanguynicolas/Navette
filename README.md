@@ -6,7 +6,7 @@
 python3 -m venv .venv
 source .venv/bin/activate
 
-pip install fastapi "uvicorn[standard]" pydantic[email]
+pip install fastapi "uvicorn[standard]" pydantic[email] pydantic-settings
 pip freeze > requirements.txt
 ```
 
