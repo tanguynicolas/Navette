@@ -3,11 +3,11 @@
 from fastapi import FastAPI
 
 from config import settings
-from user.router import router
+from user.router import router as user
 
 app = FastAPI()
 
-app.include_router(router, prefix="/user", tags=["user"])
+app.include_router(user, prefix="/user", tags=["user"])
 
 @app.get("/livez")
 def alive():
