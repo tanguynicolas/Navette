@@ -20,8 +20,8 @@ touch .env .gitignore logging.ini alembic.ini
 touch config.py models.py exceptions.py database.py main.py)
 
 # Package
-mkdir src/api
-(cd src/api && \
+mkdir src/user
+(cd src/user && \
 touch router.py schemas.py models.py dependencies.py config.py constants.py exceptions.py service.py utils.py)
 ```
 
