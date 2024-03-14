@@ -33,5 +33,6 @@ source .venv/bin/activate
 
 pip install -r requirements.txt
 
-python manage.py runserver
+cd src
+uvicorn main:app --reload
 ```
