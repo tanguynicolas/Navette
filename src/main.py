@@ -10,4 +10,4 @@ app = FastAPI()
 def alive():
     return("I'm alive!")
 
-app.include_router(user)
+app.include_router(user, prefix="/user", tags=["user"])
