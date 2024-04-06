@@ -36,7 +36,7 @@ def read_user(user_id: int, db: Session = Depends(get_db)):
 
 @router.post("/users/", response_model=schemas.User)
 def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
-    db_user = service.get_user_by_email(db, email=user.email)
+    db_user = service.check_existing_user(db, user)
     if db_user:
-        raise HTTPException(status_code=400, detail="Email already registered")
+        raise HTTPException(status_code=409, detail="One of the unique attribute already registered")
     return service.create_user(db=db, user=user)

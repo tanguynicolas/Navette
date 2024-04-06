@@ -2,6 +2,7 @@
 # « Rend possible l'utilisation désirée (schemas) avec l'utilisation réelle (models). »
 
 from sqlalchemy.orm import Session
+from sqlalchemy import or_
 
 from . import models, schemas
 
@@ -31,8 +32,17 @@ def get_users(db: Session, skip: int = 0, limit: int = 100):
 def get_user_by_id(db: Session, user_id: int):
     return db.query(models.User).filter(models.User.id == user_id).first()
 
-def get_user_by_email(db: Session, email: str):
-    return db.query(models.User).filter(models.User.email == email).first()
+def check_existing_user(db: Session, user: schemas.UserCreate):
+    """
+    Vérifie si l'un des critères unique existe déjà dans la base de données.
+    """
+    return db.query(models.User).filter(
+        or_(
+            models.User.email == user.email,
+            models.User.vehicle_registration == user.vehicle_registration,
+            models.User.mac_beacon == user.mac_beacon
+        )
+    ).first()
 
 def create_user(db: Session, user: schemas.UserCreate):
     db_city = get_city_by_name(db, user.city_name)
