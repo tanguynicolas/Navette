@@ -7,7 +7,7 @@ from user.router import router as user
 
 app = FastAPI()
 
-app.include_router(user, prefix="/user", tags=["user"])
+app.include_router(user, prefix="/api/v1", tags=["navette_v1"])
 
 @app.get("/livez")
 def alive():

@@ -2,8 +2,11 @@
 # The data validation, conversion, and documentation classes and instances.
 # « Resprésente comment moi j'ai envie d'envoyer ou de recevoir les données. »
 
-from pydantic import BaseModel # EmailStr, PositiveInt
+from pydantic import BaseModel, EmailStr
 
+"""
+    CITIES schemas
+"""
 
 class CityBase(BaseModel):
     name: str
@@ -19,9 +22,19 @@ class City(CityBase):
     class Config:
         orm_mode = True
 
+"""
+    ZONES schemas
+"""
+
+
+
+"""
+    USERS schemas
+"""
+
 # for reading / returning
 class UserBase(BaseModel):
-    email: str
+    email: EmailStr
     name: str
     vehicle_model: str
     vehicle_color: str
