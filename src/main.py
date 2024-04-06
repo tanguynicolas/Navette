@@ -16,5 +16,6 @@ def alive():
 @app.get("/info")
 def info():
     return{
+        "Database host": settings.db_host,
         "Database username": settings.db_user
     }
