@@ -2,76 +2,44 @@
 # The data validation, conversion, and documentation classes and instances.
 # « Resprésente comment moi j'ai envie d'envoyer ou de recevoir les données. »
 
-from pydantic import BaseModel, EmailStr
+from typing import Optional
 
-"""
-    CITIES schemas
-"""
+from typing_extensions import Annotated
+from pydantic import BaseModel, Field, ConfigDict, EmailStr
 
-class CityBase(BaseModel):
+from city.schemas import CityList
+from zone.schemas import ZoneList
+
+class UserList(BaseModel):
+    id: int
+    email: EmailStr
     name: str
 
-# attributes needed for creation
-class CityCreate(CityBase):
-    pass
-
-class City(CityBase):
-    id: int
-
-    # used to provide configurations to Pydantic
-    class Config:
-        orm_mode = True
-
-"""
-    ZONES schemas
-"""
-
-
-
-"""
-    USERS schemas
-"""
-
-# for reading / returning
 class UserBase(BaseModel):
     email: EmailStr
     name: str
-    vehicle_model: str
-    vehicle_color: str
-    vehicle_registration: str
-    mac_beacon: str
+    vehicle_model: Optional[str] = None
+    vehicle_color: Optional[str] = None
+    vehicle_registration: Optional[str] = None
+    verified: Optional[bool] = False
+    ticket_balance: Optional[int] = 0
+    mac_beacon: Optional[str] = None
 
-# attributes needed for creation
 class UserCreate(UserBase):
-    city_name: str
+    id_city: Optional[int] = None
+    id_zone: Optional[int] = None
 
-# for reading / returning
+class UserUpdate(UserCreate):
+    email: Optional[EmailStr] = None
+    name: Optional[str] = None
+    verified: Optional[bool] = None
+    ticket_balance: Optional[int] = None
+
 class User(UserBase):
     id: int
-    verified: bool
-    city: City
-    #zone: Zone
+    city: Optional[CityList] = None
+    zone: Optional[ZoneList] = None
 
-    # used to provide configurations to Pydantic
-    class Config:
-        orm_mode = True
-
-#class VehicleColor(Enum):
-#    WHITE  = "white"
-#    BLACK  = "black"
-#    GREY   = "grey"
-#    BLUE   = "blue"
-#    RED    = "red"
-#    YELLOW = "yellow"
-#    ORANGE = "orange"
-#
-#class User(BaseModel):
-#    id: PositiveInt
-#    email: EmailStr
-#    name: str
-#    verified: bool
-#    vehicle_model: str | None
-#    vehicle_color: VehicleColor | None
-#    vehicle_registration: str | None
-#    ticket_balance: PositiveInt = 0
-#    mac_beacon: str | None
+    model_config = ConfigDict(
+        from_attributes=True
+    )

@@ -36,3 +36,9 @@ pip install -r requirements.txt
 cd src
 uvicorn main:app --reload
 ```
+
+## Travaux
+
+- quand on récupère toutes les cities / users, afficher uniquement leur nom unique
+- avec ce nom unique, une requete via ce nom unique permet de récup toutes les infos sur le city/user (remplacer get_user_by_id par get_user_by_email ?)
+- plutôt que de re spécifier à chaque fois les types à passer aux functions, utiliser les types du schéma en question

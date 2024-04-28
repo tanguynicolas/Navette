@@ -3,11 +3,17 @@
 from fastapi import FastAPI
 
 from config import settings
+from auth.router import router as auth
+from city.router import router as city
+from zone.router import router as zone
 from user.router import router as user
 
-app = FastAPI()
+app = FastAPI(title="Navette")
 
-app.include_router(user, prefix="/api/v1", tags=["navette_v1"])
+app.include_router(auth, prefix="/api/v1/auth", tags=["auth"])
+app.include_router(city, prefix="/api/v1/city", tags=["city"])
+app.include_router(zone, prefix="/api/v1/city/{city_id}/zone", tags=["zone"])
+app.include_router(user, prefix="/api/v1/user", tags=["user"])
 
 @app.get("/livez")
 def alive():

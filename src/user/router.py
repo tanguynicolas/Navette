@@ -1,10 +1,18 @@
 # is a core of each module with all the endpoints
 
-from fastapi import Depends, APIRouter, HTTPException
-from sqlalchemy.orm import Session
+from typing import List
 
-from . import service, models, schemas
+from fastapi import Depends, APIRouter
+from sqlalchemy.orm import Session
+from pydantic import EmailStr
+
 from database import SessionLocal, engine
+import models
+from . import service, schemas, exceptions
+from city.service import select_city_by_id
+from city.exceptions import check_city_id
+from zone.service import select_zone_by_id
+from zone.exceptions import check_zone_id
 
 models.Base.metadata.create_all(bind=engine) # To replace by Alembic
 
@@ -18,25 +26,80 @@ def get_db():
     finally:
         db.close()
 
-"""
-    USERS routes
-"""
+@router.get("/", response_model=List[schemas.UserList])
+def list_users(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
+    return service.select_all_users(db=db, skip=skip, limit=limit)
 
-@router.get("/users/", response_model=list[schemas.User])
-def read_users(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
-    users = service.get_users(db, skip=skip, limit=limit)
-    return users
-
-@router.get("/users/{user_id}", response_model=schemas.User)
+@router.get("/{user_id}", response_model=schemas.User)
 def read_user(user_id: int, db: Session = Depends(get_db)):
-    db_user = service.get_user_by_id(db, user_id=user_id)
-    if db_user is None:
-        raise HTTPException(status_code=404, detail="User not found")
+    db_user = service.select_user_by_id(db=db, id=user_id)
+    exceptions.check_user_id(id=user_id, user=db_user)
     return db_user
 
-@router.post("/users/", response_model=schemas.User)
+@router.post("/", response_model=schemas.User)
 def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
-    db_user = service.check_existing_user(db, user)
-    if db_user:
-        raise HTTPException(status_code=409, detail="One of the unique attribute already registered")
-    return service.create_user(db=db, user=user)
+    db_user = service.select_user_by_email(db=db, email=user.email)
+    exceptions.check_user_email(user=db_user)
+
+    exceptions.check_city_when_zone(zone_id=user.id_zone, city_id=user.id_city)
+
+    if user.id_city:
+        db_city = select_city_by_id(db=db, id=user.id_city)
+        check_city_id(id=user.id_city, city=db_city)
+        if user.id_zone:
+            db_zone = select_zone_by_id(db=db, city_id=user.id_city, id=user.id_zone)
+            check_zone_id(city_id=user.id_city, id=user.id_zone, zone=db_zone)
+
+    return service.insert_user(db=db, user=user)
+
+@router.put("/{user_id}", response_model=schemas.User)
+def update_user(user_id: int, user: schemas.UserUpdate, db: Session = Depends(get_db)):
+    db_user = service.select_user_by_id(db=db, id=user_id)
+    exceptions.check_user_id(id=user_id, user=db_user)
+
+    if user.email:
+        db_user_test = service.select_user_by_email(db=db, email=user.email)
+        exceptions.check_user_email(user=db_user_test, exclude_id=user_id)
+
+    exceptions.check_city_when_zone(zone_id=user.id_zone, city_id=user.id_city)
+
+    if user.id_city:
+        db_city = select_city_by_id(db=db, id=user.id_city)
+        check_city_id(id=user.id_city, city=db_city)
+        if user.id_zone:
+            db_zone = select_zone_by_id(db=db, city_id=user.id_city, id=user.id_zone)
+            check_zone_id(city_id=user.id_city, id=user.id_zone, zone=db_zone)
+        elif db_user.id_zone: # type: ignore
+            db_zone = select_zone_by_id(db=db, city_id=user.id_city, id=db_user.id_zone) # type: ignore
+            check_zone_id(city_id=user.id_city, id=db_user.id_zone, zone=db_zone) # type: ignore
+
+    return service.update_user(db=db, db_user=db_user, target_user=user)
+
+@router.patch("/{user_id}", response_model=schemas.User)
+def partial_update_user(user_id: int, user: schemas.UserUpdate, db: Session = Depends(get_db)):
+    db_user = service.select_user_by_id(db=db, id=user_id)
+    exceptions.check_user_id(id=user_id, user=db_user)
+
+    if user.email:
+        db_user_test = service.select_user_by_email(db=db, email=user.email)
+        exceptions.check_user_email(user=db_user_test, exclude_id=user_id)
+
+    exceptions.check_city_when_zone(zone_id=user.id_zone, city_id=user.id_city)
+
+    if user.id_city:
+        db_city = select_city_by_id(db=db, id=user.id_city)
+        check_city_id(id=user.id_city, city=db_city)
+        if user.id_zone:
+            db_zone = select_zone_by_id(db=db, city_id=user.id_city, id=user.id_zone)
+            check_zone_id(city_id=user.id_city, id=user.id_zone, zone=db_zone)
+        elif db_user.id_zone: # type: ignore
+            db_zone = select_zone_by_id(db=db, city_id=user.id_city, id=db_user.id_zone) # type: ignore
+            check_zone_id(city_id=user.id_city, id=db_user.id_zone, zone=db_zone) # type: ignore
+
+    return service.partial_update_user(db=db, db_user=db_user, target_user=user)
+
+@router.delete("/{user_id}", response_model=schemas.UserCreate)
+def remove_user(user_id: int, db: Session = Depends(get_db)):
+    db_user = service.select_user_by_id(db=db, id=user_id)
+    exceptions.check_user_id(id=user_id, user=db_user)
+    return service.delete_user(db=db, id=user_id)
