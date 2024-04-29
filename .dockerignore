@@ -1,0 +1,8 @@
+.dockerignore
+.gitignore
+.env
+.github/
+.venv/
+tests/
+generator.py
+README.md
