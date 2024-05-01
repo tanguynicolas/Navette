@@ -7,7 +7,7 @@ from typing import Optional, List
 from typing_extensions import Annotated
 from pydantic import BaseModel, Field, ConfigDict, EmailStr
 
-from zone.schemas import ZoneList
+from ..zone.schemas import ZoneList
 
 """
     Un modèle avec N attributs doit forcément être utilisé avec ses N attributs.

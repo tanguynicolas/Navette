@@ -3,10 +3,10 @@
 from fastapi import Depends, APIRouter
 from sqlalchemy.orm import Session
 
-from database import SessionLocal, engine
-import models
+from ..database import SessionLocal, engine
+from .. import models
 from . import schemas, exceptions
-from user.service import select_user_by_email
+from ..user.service import select_user_by_email
 
 models.Base.metadata.create_all(bind=engine) # To replace by Alembic
 

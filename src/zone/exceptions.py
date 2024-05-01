@@ -2,7 +2,7 @@
 
 from fastapi import HTTPException
 
-import models
+from .. import models
 
 def check_zone_id(city_id: int, id: int, zone: models.Zone):
     if not zone:

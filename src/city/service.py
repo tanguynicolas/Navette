@@ -4,7 +4,7 @@
 from sqlalchemy.orm import Session
 from sqlalchemy.future import select
 
-import models
+from .. import models
 from . import schemas
 
 

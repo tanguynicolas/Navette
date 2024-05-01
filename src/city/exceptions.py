@@ -2,7 +2,7 @@
 
 from fastapi import HTTPException
 
-import models
+from .. import models
 
 def check_city_id(id: int, city: models.City):
     if not city:

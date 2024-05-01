@@ -2,7 +2,7 @@
 
 from fastapi import HTTPException
 
-import models
+from .. import models
 
 def check_user_id(id: int, user: models.User):
     if not user:

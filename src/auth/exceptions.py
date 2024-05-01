@@ -1,7 +1,7 @@
 from pydantic import EmailStr
 from fastapi import HTTPException
 
-import models
+from .. import models
 
 def check_user_email(email: EmailStr, user: models.User):
     if not user:

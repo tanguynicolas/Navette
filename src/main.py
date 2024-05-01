@@ -2,11 +2,11 @@
 
 from fastapi import FastAPI
 
-from config import settings
-from auth.router import router as auth
-from city.router import router as city
-from zone.router import router as zone
-from user.router import router as user
+from .config import database_settings
+from .auth.router import router as auth
+from .city.router import router as city
+from .zone.router import router as zone
+from .user.router import router as user
 
 app = FastAPI(title="Navette")
 
@@ -21,7 +21,10 @@ def alive():
 
 @app.get("/info")
 def info():
+    database_type = "sqlite" if database_settings.enable_sqlite == True else "postgres"
+
     return{
-        "Database host": settings.db_host,
-        "Database username": settings.db_user
+        "Database type": database_type,
+        "Database host": database_settings.hostname,
+        "Database username": database_settings.username
     }

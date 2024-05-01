@@ -6,13 +6,13 @@ from fastapi import Depends, APIRouter
 from sqlalchemy.orm import Session
 from pydantic import EmailStr
 
-from database import SessionLocal, engine
-import models
+from ..database import SessionLocal, engine
+from .. import models
 from . import service, schemas, exceptions
-from city.service import select_city_by_id
-from city.exceptions import check_city_id
-from zone.service import select_zone_by_id
-from zone.exceptions import check_zone_id
+from ..city.service import select_city_by_id
+from ..city.exceptions import check_city_id
+from ..zone.service import select_zone_by_id
+from ..zone.exceptions import check_zone_id
 
 models.Base.metadata.create_all(bind=engine) # To replace by Alembic
 

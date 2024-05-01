@@ -5,7 +5,7 @@ from sqlalchemy.orm import Session
 from sqlalchemy.future import select
 from pydantic import EmailStr
 
-import models
+from .. import models
 from . import schemas
 
 def select_all_users(db: Session, skip: int = 0, limit: int = 100):

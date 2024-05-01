@@ -7,8 +7,8 @@ from typing import Optional
 from typing_extensions import Annotated
 from pydantic import BaseModel, Field, ConfigDict, EmailStr
 
-from city.schemas import CityList
-from zone.schemas import ZoneList
+from ..city.schemas import CityList
+from ..zone.schemas import ZoneList
 
 class UserList(BaseModel):
     id: int

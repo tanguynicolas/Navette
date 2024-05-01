@@ -1,12 +1,19 @@
 # e.g. global env vars
 
+from typing import Optional
+from pydantic import PostgresDsn
+from pydantic.types import SecretStr
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
-class Settings(BaseSettings):
-    db_host: str
-    db_user: str
-    db_pass: str
+class DatabaseSettings(BaseSettings):
+    enable_sqlite: Optional[bool] = False
 
-    model_config = SettingsConfigDict(env_file="../.env")
+    if enable_sqlite == False:
+        hostname: Optional[str] = "localhost"
+        username: Optional[str] = "postgres"
+        password: SecretStr
+        database: Optional[str] = username
 
-settings = Settings() # type: ignore
+    model_config = SettingsConfigDict(env_file=".env", env_prefix="db_")
+
+database_settings = DatabaseSettings() # type: ignore
