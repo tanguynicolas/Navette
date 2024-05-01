@@ -1,6 +1,7 @@
 # root of the project, which inits the FastAPI app
 
 from fastapi import FastAPI
+from fastapi.responses import RedirectResponse
 
 from .config import database_settings
 from .auth.router import router as auth
@@ -14,6 +15,10 @@ app.include_router(auth, prefix="/api/v1/auth", tags=["auth"])
 app.include_router(city, prefix="/api/v1/city", tags=["city"])
 app.include_router(zone, prefix="/api/v1/city/{city_id}/zone", tags=["zone"])
 app.include_router(user, prefix="/api/v1/user", tags=["user"])
+
+@app.get("/", include_in_schema=False)
+async def docs_redirect():
+    return RedirectResponse(url='/docs')
 
 @app.get("/livez")
 def alive():
