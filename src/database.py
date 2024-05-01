@@ -15,7 +15,7 @@ if database_settings.enable_sqlite:
     connect_args = {"check_same_thread": False}
     logging.getLogger("sqlalchemy.engine").setLevel(logging.INFO)
 else:
-    SQLALCHEMY_DATABASE_URL = f"postgresql://{database_settings.username}:{database_settings.password.get_secret_value()}@{database_settings.hostname}/{database_settings.database}"
+    SQLALCHEMY_DATABASE_URL = f"postgresql://{database_settings.username}:{database_settings.password}@{database_settings.hostname}/{database_settings.database}"
     connect_args = {}
     logging.getLogger("sqlalchemy.engine").setLevel(logging.WARN)
     

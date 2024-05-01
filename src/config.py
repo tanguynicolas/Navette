@@ -11,9 +11,9 @@ class DatabaseSettings(BaseSettings):
     if enable_sqlite == False:
         hostname: Optional[str] = "localhost"
         username: Optional[str] = "postgres"
-        password: SecretStr
+        password: Optional[str] = "postgres"
         database: Optional[str] = username
 
     model_config = SettingsConfigDict(env_file=".env", env_prefix="db_")
 
-database_settings = DatabaseSettings() # type: ignore
+database_settings = DatabaseSettings()
