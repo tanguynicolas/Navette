@@ -5,13 +5,13 @@
 from typing import Optional
 
 from typing_extensions import Annotated
-from pydantic import BaseModel, Field, ConfigDict, EmailStr
+from pydantic import BaseModel, Field, ConfigDict, EmailStr, PositiveInt
 
 from ..city.schemas import CityList
 from ..zone.schemas import ZoneList
 
 class UserList(BaseModel):
-    id: int
+    id: PositiveInt
     email: EmailStr
     name: str
 
@@ -26,8 +26,8 @@ class UserBase(BaseModel):
     mac_beacon: Optional[str] = None
 
 class UserCreate(UserBase):
-    id_city: Optional[int] = None
-    id_zone: Optional[int] = None
+    id_city: Optional[PositiveInt] = None
+    id_zone: Optional[PositiveInt] = None
 
 class UserUpdate(UserCreate):
     email: Optional[EmailStr] = None
@@ -36,7 +36,7 @@ class UserUpdate(UserCreate):
     ticket_balance: Optional[int] = None
 
 class User(UserBase):
-    id: int
+    id: PositiveInt
     city: Optional[CityList] = None
     zone: Optional[ZoneList] = None
 

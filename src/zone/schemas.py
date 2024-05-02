@@ -5,10 +5,10 @@
 from typing import Optional
 
 from typing_extensions import Annotated
-from pydantic import BaseModel, Field, ConfigDict
+from pydantic import BaseModel, Field, ConfigDict, PositiveInt
 
 class ZoneList(BaseModel):
-    id: int
+    id: PositiveInt
     name: str
 
 class ZoneBase(BaseModel):
@@ -23,7 +23,7 @@ class ZoneUpdate(ZoneCreate):
     name: Optional[str] = None
 
 class Zone(ZoneBase):
-    id: int
+    id: PositiveInt
 
     model_config = ConfigDict(
         from_attributes=True

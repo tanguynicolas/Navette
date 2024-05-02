@@ -5,7 +5,7 @@
 from typing import Optional, List
 
 from typing_extensions import Annotated
-from pydantic import BaseModel, Field, ConfigDict, EmailStr
+from pydantic import BaseModel, Field, ConfigDict, EmailStr, PositiveInt
 
 from ..zone.schemas import ZoneList
 
@@ -21,7 +21,7 @@ from ..zone.schemas import ZoneList
 """
 
 class CityList(BaseModel):
-    id: int
+    id: PositiveInt
     name: str
 
 class CityBase(BaseModel):
@@ -34,7 +34,7 @@ class CityUpdate(CityCreate):
     name: Optional[str] = None
 
 class City(CityBase):
-    id: int
+    id: PositiveInt
     zones: List[ZoneList] = []
 
     model_config = ConfigDict(
