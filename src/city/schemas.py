@@ -26,6 +26,7 @@ class CityList(BaseModel):
 
 class CityBase(BaseModel):
     name: str
+    picture: Optional[str] = None
 
 class CityCreate(CityBase):
     pass

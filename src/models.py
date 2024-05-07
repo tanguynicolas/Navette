@@ -14,6 +14,7 @@ class City(Base):
 
     id: Mapped[int] = mapped_column(primary_key=True)
     name: Mapped[str] = mapped_column(String(50), unique=True)
+    picture: Mapped[Optional[str]] = mapped_column(String(2048))
 
     users: Mapped[List["User"]] = relationship(back_populates="city")
     zones: Mapped[List["Zone"]] = relationship(back_populates="city")

@@ -19,7 +19,8 @@ def select_city_by_name(db: Session, name: str):
     return db.scalar(select(models.City).where(models.City.name == name))
 
 def insert_city(db: Session, city: schemas.CityCreate):
-    db_city = models.City(name=city.name)
+    db_city = models.City(name=city.name,
+                          picture=city.picture)
     db.add(db_city)
     db.commit()
     db.refresh(db_city)
