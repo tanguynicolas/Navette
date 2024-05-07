@@ -6,7 +6,7 @@
 python3 -m venv .venv
 source .venv/bin/activate
 
-pip install fastapi "uvicorn[standard]" pydantic[email] pydantic-settings sqlalchemy
+pip install fastapi "uvicorn[standard]" "pydantic[email]" pydantic-settings sqlalchemy alembic
 pip freeze > requirements.txt
 ```
 

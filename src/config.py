@@ -1,8 +1,6 @@
 # e.g. global env vars
 
 from typing import Optional
-from pydantic import PostgresDsn
-from pydantic.types import SecretStr
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 class DatabaseSettings(BaseSettings):

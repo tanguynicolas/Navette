@@ -3,6 +3,7 @@
 .env
 .github/
 .venv/
+*.db
 tests/
 generator.py
 README.md

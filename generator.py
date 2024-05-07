@@ -1,6 +1,6 @@
 import requests
 
-base_uri = "http://localhost:8000/api/v1/"
+base_uri = "https://api.tintamarre.info/api/v1/"
 
 """
     CITIES creation
@@ -10,7 +10,6 @@ headers = {
     'accept': 'application/json',
     'Content-Type': 'application/json'
 }
-uri = base_uri + 'city/'
 
 cities = [
   {
@@ -79,15 +78,28 @@ count = 0
 for city in cities:
     count += 1
 
-    requests.post(
-        f"{base_uri}city/",
-        headers=headers,
-        json=city["city"]
-    )
+    try:
+        r = requests.post(
+            f"{base_uri}city/",
+            headers=headers,
+            json=city["city"]
+        )
+        print(f"{r.status_code} City {city['city']['name']} created")
+    except requests.exceptions.RequestException as e:
+        print(f"{r.status_code} Failed to create city {city['city']['name']}")
+        raise SystemExit(e)
 
     for zone in city["zone"]:
-        requests.post(
-            f"{base_uri}city/{count}/zone",
-            headers=headers,
-            json=zone
-        )
+        
+        try:
+            print(f"\t >>>> {zone}")
+            r = requests.post(
+                f"{base_uri}city/{count}/zone",
+                headers=headers,
+                json=zone
+            )
+            print(f"\t{r.status_code} Zone {zone['name']} created")
+            print(f"\t\t{r.json()}")
+        except requests.exceptions.RequestException as e:
+            print(f"\t{r.status_code} Failed to create zone {zone['name']}")
+            raise SystemExit(e)
