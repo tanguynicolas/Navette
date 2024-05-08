@@ -20,13 +20,23 @@ source .venv/bin/activate
 
 pip install -r requirements.txt
 
-cd src
-uvicorn src.main:app --reload
+touch .env
 ```
 
 ## Migration
 
-```bash
+Adapt `.env` file before if necessary.
+
+```shell
 alembic revision --autogenerate [-m ""]
 alembic upgrade head
+```
+
+# Run locally
+
+Adapt `.env` file before if necessary.
+
+```shell
+docker compose -f docker-compose-local.yml up -d 
+uvicorn src.main:app --reload
 ```
