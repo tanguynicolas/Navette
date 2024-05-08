@@ -1,4 +1,6 @@
 version: '3.9'
+name: navette
+
 services:
   postgresql:
     container_name: cvp-postgresql # not horizontally scalable

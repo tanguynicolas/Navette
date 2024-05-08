@@ -1,10 +1,9 @@
-.dockerignore
 .gitignore
 .env
+.git/
 .github/
 .venv/
 *.db
-tests/
 generator.py
 README.md
 __pycache__/
