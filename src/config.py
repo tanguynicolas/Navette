@@ -12,6 +12,6 @@ class DatabaseSettings(BaseSettings):
         password: Optional[str] = None
         database: Optional[str] = None
 
-    model_config = SettingsConfigDict(env_file=".env", env_prefix="db_")
+    model_config = SettingsConfigDict(env_file=".env", env_prefix="db_", extra="allow")
 
 database_settings = DatabaseSettings()
