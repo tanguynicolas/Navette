@@ -8,7 +8,8 @@ base_uri = "https://api.tintamarre.info/api/v1/"
 
 headers = {
     'accept': 'application/json',
-    'Content-Type': 'application/json'
+    'Content-Type': 'application/json',
+    'Authorization': 'Bearer i2j5eEYQpbUAN8K72fMUGnXAD'
 }
 
 cities = [

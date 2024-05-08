@@ -3,8 +3,8 @@ name: navette
 
 services:
   postgresql:
-    container_name: cvp-postgresql # not horizontally scalable
-    image: postgres:16
+    container_name: ${COMPOSE_PROJECT_NAME}-postgresql # not horizontally scalable
+    image: postgres:16-alpine
     restart: always
     ports:
       - 5432:5432
@@ -20,8 +20,8 @@ services:
       retries: 10
 
   pgadmin:
-    container_name: cvp-pgadmin # not horizontally scalable
-    image: dpage/pgadmin4
+    container_name: ${COMPOSE_PROJECT_NAME}-pgadmin # not horizontally scalable
+    image: dpage/pgadmin4:8
     restart: unless-stopped
     ports:
       - 8080:80

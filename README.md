@@ -23,3 +23,10 @@ pip install -r requirements.txt
 cd src
 uvicorn src.main:app --reload
 ```
+
+## Migration
+
+```bash
+alembic revision --autogenerate [-m ""]
+alembic upgrade head
+```
