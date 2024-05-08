@@ -69,3 +69,7 @@ def delete_user(db: Session, id: int):
     db.delete(db_user)
     db.commit()
     return db_user
+
+# Special usecase
+def select_zone_by_id_only(db: Session, id: int):
+    return db.get(models.Zone, id)

@@ -11,8 +11,6 @@ from .. import models
 from . import service, schemas, exceptions
 from ..city.service import select_city_by_id
 from ..city.exceptions import check_city_id
-from ..zone.service import select_zone_by_id
-from ..zone.exceptions import check_zone_id
 
 models.Base.metadata.create_all(bind=engine) # To replace by Alembic
 
@@ -41,14 +39,12 @@ def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
     db_user = service.select_user_by_email(db=db, email=user.email)
     exceptions.check_user_email(user=db_user)
 
-    exceptions.check_city_when_zone(zone_id=user.id_zone, city_id=user.id_city)
-
     if user.id_city:
         db_city = select_city_by_id(db=db, id=user.id_city)
         check_city_id(id=user.id_city, city=db_city)
-        if user.id_zone:
-            db_zone = select_zone_by_id(db=db, city_id=user.id_city, id=user.id_zone)
-            check_zone_id(city_id=user.id_city, id=user.id_zone, zone=db_zone)
+    if user.id_zone:
+        db_zone = service.select_zone_by_id_only(db=db, id=user.id_zone)
+        exceptions.check_zone_id_only(id=user.id_zone, zone=db_zone)
 
     return service.insert_user(db=db, user=user)
 
@@ -61,17 +57,12 @@ def update_user(user_id: int, user: schemas.UserUpdate, db: Session = Depends(ge
         db_user_test = service.select_user_by_email(db=db, email=user.email)
         exceptions.check_user_email(user=db_user_test, exclude_id=user_id)
 
-    exceptions.check_city_when_zone(zone_id=user.id_zone, city_id=user.id_city)
-
     if user.id_city:
         db_city = select_city_by_id(db=db, id=user.id_city)
         check_city_id(id=user.id_city, city=db_city)
-        if user.id_zone:
-            db_zone = select_zone_by_id(db=db, city_id=user.id_city, id=user.id_zone)
-            check_zone_id(city_id=user.id_city, id=user.id_zone, zone=db_zone)
-        elif db_user.id_zone: # type: ignore
-            db_zone = select_zone_by_id(db=db, city_id=user.id_city, id=db_user.id_zone) # type: ignore
-            check_zone_id(city_id=user.id_city, id=db_user.id_zone, zone=db_zone) # type: ignore
+    if user.id_zone:
+        db_zone = service.select_zone_by_id_only(db=db, id=user.id_zone)
+        exceptions.check_zone_id_only(id=user.id_zone, zone=db_zone)
 
     return service.update_user(db=db, db_user=db_user, target_user=user)
 
@@ -84,17 +75,12 @@ def partial_update_user(user_id: int, user: schemas.UserUpdate, db: Session = De
         db_user_test = service.select_user_by_email(db=db, email=user.email)
         exceptions.check_user_email(user=db_user_test, exclude_id=user_id)
 
-    exceptions.check_city_when_zone(zone_id=user.id_zone, city_id=user.id_city)
-
     if user.id_city:
         db_city = select_city_by_id(db=db, id=user.id_city)
         check_city_id(id=user.id_city, city=db_city)
-        if user.id_zone:
-            db_zone = select_zone_by_id(db=db, city_id=user.id_city, id=user.id_zone)
-            check_zone_id(city_id=user.id_city, id=user.id_zone, zone=db_zone)
-        elif db_user.id_zone: # type: ignore
-            db_zone = select_zone_by_id(db=db, city_id=user.id_city, id=db_user.id_zone) # type: ignore
-            check_zone_id(city_id=user.id_city, id=db_user.id_zone, zone=db_zone) # type: ignore
+    if user.id_zone:
+        db_zone = service.select_zone_by_id_only(db=db, id=user.id_zone)
+        exceptions.check_zone_id_only(id=user.id_zone, zone=db_zone)
 
     return service.partial_update_user(db=db, db_user=db_user, target_user=user)
 

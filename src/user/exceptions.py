@@ -15,7 +15,8 @@ def check_user_email(user: models.User, exclude_id: int | None = None):
             raise HTTPException(status_code=409, detail=f"User {user.email} already registered")
     return
 
-def check_city_when_zone(zone_id: int | None, city_id: int | None):
-    if zone_id and not city_id:
-        raise HTTPException(status_code=400, detail="When zone_id is set, city_id is mandatory")
+# Special usecase
+def check_zone_id_only(id: int, zone: models.Zone):
+    if not zone:
+        raise HTTPException(status_code=404, detail=f"Zone identified by {id} not found")
     return
