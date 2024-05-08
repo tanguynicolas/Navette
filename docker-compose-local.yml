@@ -1,0 +1,36 @@
+version: '3.9'
+services:
+  postgresql:
+    container_name: cvp-postgresql # not horizontally scalable
+    image: postgres:16
+    restart: always
+    ports:
+      - 5432:5432
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 3s
+      timeout: 3s
+      retries: 10
+
+  pgadmin:
+    container_name: cvp-pgadmin # not horizontally scalable
+    image: dpage/pgadmin4
+    restart: unless-stopped
+    ports:
+      - 8080:80
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=${PGADMIN_DEFAULT_EMAIL}
+      - PGADMIN_DEFAULT_PASSWORD=${PGADMIN_DEFAULT_PASSWORD}
+      - PGADMIN_DISABLE_POSTFIX=True
+      - PGADMIN_CONFIG_WTF_CSRF_CHECK_DEFAULT=False
+    volumes:
+      - dba-data:/var/lib/pgadmin
+
+volumes:
+  db-data:
+  dba-data:

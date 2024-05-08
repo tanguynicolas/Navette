@@ -24,9 +24,18 @@ jobs:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
 
-      - name: Build and push image
+      - name: Build and push LB image
         uses: docker/build-push-action@v3
         with:
+          file: ./Dockerfile.lb
+          platforms: linux/amd64
+          push: true
+          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/navette-lb:latest
+
+      - name: Build and push API image
+        uses: docker/build-push-action@v3
+        with:
+          file: ./Dockerfile.api
           platforms: linux/amd64
           push: true
           tags: ${{ secrets.DOCKER_HUB_USERNAME }}/navette-api:latest

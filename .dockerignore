@@ -7,3 +7,6 @@
 tests/
 generator.py
 README.md
+__pycache__/
+docker-compose*.yml
+Dockerfile*
