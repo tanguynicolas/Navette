@@ -1,6 +1,8 @@
+# From local
 allow 127.0.0.1;
 allow 172.20.0.1;
 
+# From Cloudflare
 allow 173.245.48.0/20;
 allow 103.21.244.0/22;
 allow 103.22.200.0/22;
