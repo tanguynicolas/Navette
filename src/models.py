@@ -18,6 +18,7 @@ class City(Base):
 
     users: Mapped[List["User"]] = relationship(back_populates="city")
     zones: Mapped[List["Zone"]] = relationship(back_populates="city")
+    stops: Mapped[List["Stop"]] = relationship(back_populates="city")
 
 class Zone(Base):
     __tablename__ = "zone"
@@ -31,6 +32,19 @@ class Zone(Base):
 
     city: Mapped[City] = relationship(back_populates="zones")
     users: Mapped[List["User"]] = relationship(back_populates="zone")
+
+class Stop(Base):
+    __tablename__ = "stop"
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    name: Mapped[str] = mapped_column(String(50))
+    address: Mapped[str] = mapped_column(String(150), nullable=False)
+    picture: Mapped[Optional[str]] = mapped_column(String(2048))
+    mac_beacon: Mapped[Optional[str]] = mapped_column(String(17), unique=True)
+
+    id_city = mapped_column(ForeignKey("city.id"))
+
+    city: Mapped[City] = relationship(back_populates="stops")
 
 class User(Base):
     __tablename__ = "user"

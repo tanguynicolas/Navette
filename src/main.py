@@ -7,6 +7,7 @@ from .config import database_settings
 from .auth.router import router as auth
 from .city.router import router as city
 from .zone.router import router as zone
+from .stop.router import router as stop
 from .user.router import router as user
 
 app = FastAPI(title="Navette")
@@ -14,6 +15,7 @@ app = FastAPI(title="Navette")
 app.include_router(auth, prefix="/api/v1/auth", tags=["auth"])
 app.include_router(city, prefix="/api/v1/city", tags=["city"])
 app.include_router(zone, prefix="/api/v1/city/{city_id}/zone", tags=["zone"])
+app.include_router(stop, prefix="/api/v1/city/{city_id}/stop", tags=["stop"])
 app.include_router(user, prefix="/api/v1/user", tags=["user"])
 
 @app.get("/", include_in_schema=False)
