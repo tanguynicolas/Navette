@@ -32,11 +32,20 @@ alembic revision --autogenerate [-m ""]
 alembic upgrade head
 ```
 
-# Run locally
+## Run locally
 
 Adapt `.env` file before if necessary.
 
 ```shell
 docker compose -f docker-compose-local.yml up -d 
 uvicorn src.main:app --reload
+```
+
+## Access
+
+You maybe need Bearer Token to access to the apps.  
+For example :
+
+```plaintext
+Authorization: Bearer Ym9zY236Ym9zY28Ym9zY236Ym9zY28=
 ```
