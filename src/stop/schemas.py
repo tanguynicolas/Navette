@@ -3,6 +3,7 @@
 # « Resprésente comment moi j'ai envie d'envoyer ou de recevoir les données. »
 
 from typing import Optional
+from datetime import time
 
 from typing_extensions import Annotated
 from pydantic import BaseModel, Field, ConfigDict, PositiveInt
@@ -15,6 +16,8 @@ class StopBase(BaseModel):
     name: str
     address: str
     picture: Optional[str] = None
+    open_at: Optional[time] = None
+    close_at: Optional[time] = None
 
 class StopCreate(StopBase):
     pass

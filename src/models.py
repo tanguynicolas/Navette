@@ -4,7 +4,8 @@
 # Pour les projets simples --> tous les modèles dans le même fichier.
 
 from typing import List, Optional
-from sqlalchemy import ForeignKey, String
+from datetime import time
+from sqlalchemy import ForeignKey, String, Time
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from .database import Base
@@ -41,6 +42,8 @@ class Stop(Base):
     address: Mapped[str] = mapped_column(String(150), nullable=False)
     picture: Mapped[Optional[str]] = mapped_column(String(2048))
     mac_beacon: Mapped[Optional[str]] = mapped_column(String(17), unique=True)
+    open_at: Mapped[Optional[time]] = mapped_column()
+    close_at: Mapped[Optional[time]] = mapped_column()
 
     id_city = mapped_column(ForeignKey("city.id"))
 
