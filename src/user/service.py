@@ -29,7 +29,8 @@ def insert_user(db: Session, user: schemas.UserCreate):
         ticket_balance=user.ticket_balance,
         mac_beacon=user.mac_beacon,
         id_city=user.id_city,
-        id_zone=user.id_zone)
+        id_zone=user.id_zone,
+        id_stop=user.id_stop)
     db.add(db_user)
     db.commit()
     db.refresh(db_user)
@@ -73,3 +74,6 @@ def delete_user(db: Session, id: int):
 # Special usecase
 def select_zone_by_id_only(db: Session, id: int):
     return db.get(models.Zone, id)
+
+def select_stop_by_id_only(db: Session, id: int):
+    return db.get(models.Stop, id)

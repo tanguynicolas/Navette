@@ -9,6 +9,7 @@ from pydantic import BaseModel, Field, ConfigDict, EmailStr, PositiveInt
 
 from ..city.schemas import CityList
 from ..zone.schemas import ZoneList
+from ..stop.schemas import StopList
 
 class UserList(BaseModel):
     id: PositiveInt
@@ -28,6 +29,7 @@ class UserBase(BaseModel):
 class UserCreate(UserBase):
     id_city: Optional[PositiveInt] = None
     id_zone: Optional[PositiveInt] = None
+    id_stop: Optional[PositiveInt] = None
 
 class UserUpdate(UserCreate):
     email: Optional[EmailStr] = None
@@ -39,6 +41,7 @@ class User(UserBase):
     id: PositiveInt
     city: Optional[CityList] = None
     zone: Optional[ZoneList] = None
+    stop: Optional[StopList] = None
 
     model_config = ConfigDict(
         from_attributes=True

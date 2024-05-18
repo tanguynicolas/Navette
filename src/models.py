@@ -48,6 +48,7 @@ class Stop(Base):
     id_city = mapped_column(ForeignKey("city.id"))
 
     city: Mapped[City] = relationship(back_populates="stops")
+    users: Mapped[List["User"]] = relationship(back_populates="stop")
 
 class User(Base):
     __tablename__ = "user"
@@ -64,6 +65,7 @@ class User(Base):
 
     id_city = mapped_column(ForeignKey("city.id"), nullable=True)
     id_zone = mapped_column(ForeignKey("zone.id"), nullable=True)
+    id_stop = mapped_column(ForeignKey("stop.id"), nullable=True)
 
     city: Mapped[City] = relationship(back_populates="users")
     zone: Mapped[Zone] = relationship(back_populates="users")

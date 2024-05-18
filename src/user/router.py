@@ -45,6 +45,9 @@ def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
     if user.id_zone:
         db_zone = service.select_zone_by_id_only(db=db, id=user.id_zone)
         exceptions.check_zone_id_only(id=user.id_zone, zone=db_zone)
+    if user.id_stop:
+        db_stop = service.select_stop_by_id_only(db=db, id=user.id_stop)
+        exceptions.check_stop_id_only(id=user.id_stop, stop=db_stop)
 
     return service.insert_user(db=db, user=user)
 
@@ -63,6 +66,9 @@ def update_user(user_id: int, user: schemas.UserUpdate, db: Session = Depends(ge
     if user.id_zone:
         db_zone = service.select_zone_by_id_only(db=db, id=user.id_zone)
         exceptions.check_zone_id_only(id=user.id_zone, zone=db_zone)
+    if user.id_stop:
+        db_stop = service.select_stop_by_id_only(db=db, id=user.id_stop)
+        exceptions.check_stop_id_only(id=user.id_stop, stop=db_stop)
 
     return service.update_user(db=db, db_user=db_user, target_user=user)
 
@@ -81,6 +87,9 @@ def partial_update_user(user_id: int, user: schemas.UserUpdate, db: Session = De
     if user.id_zone:
         db_zone = service.select_zone_by_id_only(db=db, id=user.id_zone)
         exceptions.check_zone_id_only(id=user.id_zone, zone=db_zone)
+    if user.id_stop:
+        db_stop = service.select_stop_by_id_only(db=db, id=user.id_stop)
+        exceptions.check_stop_id_only(id=user.id_stop, stop=db_stop)
 
     return service.partial_update_user(db=db, db_user=db_user, target_user=user)
 

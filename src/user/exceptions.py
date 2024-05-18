@@ -20,3 +20,8 @@ def check_zone_id_only(id: int, zone: models.Zone):
     if not zone:
         raise HTTPException(status_code=404, detail=f"Zone identified by {id} not found")
     return
+
+def check_stop_id_only(id: int, stop: models.Stop):
+    if not stop:
+        raise HTTPException(status_code=404, detail=f"Stop identified by {id} not found")
+    return
