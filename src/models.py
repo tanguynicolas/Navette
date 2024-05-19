@@ -69,3 +69,4 @@ class User(Base):
 
     city: Mapped[City] = relationship(back_populates="users")
     zone: Mapped[Zone] = relationship(back_populates="users")
+    stop: Mapped[Stop] = relationship(back_populates="users")
