@@ -5,7 +5,7 @@
 
 from typing import List, Optional
 from datetime import datetime, time
-from sqlalchemy import ForeignKey, String, Time
+from sqlalchemy import ForeignKey, String, Time, or_
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from .database import Base
@@ -70,22 +70,27 @@ class User(Base):
     city: Mapped[City] = relationship(back_populates="users")
     zone: Mapped[Zone] = relationship(back_populates="users")
     stop: Mapped[Stop] = relationship(back_populates="users")
-    travels: Mapped[List["Travel"]] = relationship(back_populates="user")
+    travels: Mapped[List["UserTravel"]] = relationship(back_populates="user")
 
 class Travel(Base):
     __tablename__ = "travel"
     
     id: Mapped[int] = mapped_column(primary_key=True)
     started_at: Mapped[Optional[datetime]] = mapped_column()
-    closed_at: Mapped[Optional[datetime]] = mapped_column()
+    finished_at: Mapped[Optional[datetime]] = mapped_column()
     departure: Mapped[str] = mapped_column()
     arrival: Mapped[str] = mapped_column()
     back_travel: Mapped[bool] = mapped_column()
-    
-    id_driver = mapped_column(ForeignKey("user.id"), nullable=True)
-    id_passenger1 = mapped_column(ForeignKey("user.id"), nullable=True)
-    id_passenger2 = mapped_column(ForeignKey("user.id"), nullable=True)
-    id_passenger3 = mapped_column(ForeignKey("user.id"), nullable=True)
-    id_passenger4 = mapped_column(ForeignKey("user.id"), nullable=True)
 
-    user: Mapped[User] = relationship(back_populates="travels")
+    users: Mapped[List["UserTravel"]] = relationship(back_populates="travel")
+
+class UserTravel(Base):
+    __tablename__ = "user_travel"
+
+    is_driver: Mapped[bool] = mapped_column()
+
+    user_id: Mapped[int] = mapped_column(ForeignKey("user.id"), primary_key=True)
+    travel_id: Mapped[int] = mapped_column(ForeignKey("travel.id"), primary_key=True)
+
+    user: Mapped["User"] = relationship("User", back_populates="travels")
+    travel: Mapped["Travel"] = relationship("Travel", back_populates="users")
