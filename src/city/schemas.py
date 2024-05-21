@@ -8,6 +8,7 @@ from typing_extensions import Annotated
 from pydantic import BaseModel, Field, ConfigDict, EmailStr, PositiveInt
 
 from ..zone.schemas import ZoneList
+from ..stop.schemas import StopList
 
 """
     Un modèle avec N attributs doit forcément être utilisé avec ses N attributs.
@@ -37,6 +38,7 @@ class CityUpdate(CityCreate):
 class City(CityBase):
     id: PositiveInt
     zones: List[ZoneList] = []
+    stops: List[StopList] = []
 
     model_config = ConfigDict(
         from_attributes=True
