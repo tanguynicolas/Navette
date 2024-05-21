@@ -9,7 +9,6 @@ from pydantic import BaseModel, Field, ConfigDict, EmailStr, PositiveInt
 from ..city.schemas import CityList
 from ..zone.schemas import ZoneList
 from ..stop.schemas import StopList
-from ..travel.schemas import TravelList
 
 class UserList(BaseModel):
     id: PositiveInt
@@ -42,7 +41,6 @@ class User(UserBase):
     city: Optional[CityList] = None
     zone: Optional[ZoneList] = None
     stop: Optional[StopList] = None
-    travels: List[TravelList] = []
 
     model_config = ConfigDict(
         from_attributes=True

@@ -87,7 +87,7 @@ class Travel(Base):
 class UserTravel(Base):
     __tablename__ = "user_travel"
 
-    is_driver: Mapped[bool] = mapped_column()
+    is_driver: Mapped[bool] = mapped_column(default=False)
 
     user_id: Mapped[int] = mapped_column(ForeignKey("user.id"), primary_key=True)
     travel_id: Mapped[int] = mapped_column(ForeignKey("travel.id"), primary_key=True)
