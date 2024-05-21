@@ -9,7 +9,7 @@ from ..database import SessionLocal, engine
 from .. import models
 from . import service, schemas, exceptions
 
-models.Base.metadata.create_all(bind=engine) # To replace by Alembic
+models.Base.metadata.create_all(bind=engine)
 
 router = APIRouter()
 

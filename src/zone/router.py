@@ -11,7 +11,7 @@ from . import service, schemas, exceptions
 from ..city.service import select_city_by_id
 from ..city.exceptions import check_city_id
 
-models.Base.metadata.create_all(bind=engine) # To replace by Alembic
+models.Base.metadata.create_all(bind=engine)
 
 router = APIRouter()
 

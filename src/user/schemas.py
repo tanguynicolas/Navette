@@ -2,14 +2,14 @@
 # The data validation, conversion, and documentation classes and instances.
 # « Resprésente comment moi j'ai envie d'envoyer ou de recevoir les données. »
 
-from typing import Optional
+from typing import Optional, List
 
-from typing_extensions import Annotated
 from pydantic import BaseModel, Field, ConfigDict, EmailStr, PositiveInt
 
 from ..city.schemas import CityList
 from ..zone.schemas import ZoneList
 from ..stop.schemas import StopList
+from ..travel.schemas import TravelList
 
 class UserList(BaseModel):
     id: PositiveInt
@@ -42,6 +42,7 @@ class User(UserBase):
     city: Optional[CityList] = None
     zone: Optional[ZoneList] = None
     stop: Optional[StopList] = None
+    travels: List[TravelList] = []
 
     model_config = ConfigDict(
         from_attributes=True

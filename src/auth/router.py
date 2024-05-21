@@ -8,7 +8,7 @@ from .. import models
 from . import schemas, exceptions
 from ..user.service import select_user_by_email
 
-models.Base.metadata.create_all(bind=engine) # To replace by Alembic
+models.Base.metadata.create_all(bind=engine)
 
 router = APIRouter()
 
