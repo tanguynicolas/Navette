@@ -80,8 +80,8 @@ class Travel(Base):
     id: Mapped[int] = mapped_column(primary_key=True)
     started_at: Mapped[Optional[datetime]] = mapped_column()
     finished_at: Mapped[Optional[datetime]] = mapped_column()
-    departure: Mapped[str] = mapped_column()
-    arrival: Mapped[str] = mapped_column()
+    departure: Mapped[int] = mapped_column()
+    arrival: Mapped[int] = mapped_column()
     back_travel: Mapped[bool] = mapped_column()
 
     users: Mapped[List["UserTravel"]] = relationship(back_populates="travel")

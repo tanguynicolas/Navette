@@ -16,16 +16,16 @@ class TravelList(BaseModel):
     id: PositiveInt
 
 class TravelBase(BaseModel):
-    departure: str
-    arrival: str
+    departure: PositiveInt
+    arrival: PositiveInt
     back_travel: bool
 
 class TravelCreate(TravelBase):
     driver_id: PositiveInt
 
 class TravelUpdate(TravelCreate):
-    departure: Optional[str] = None
-    arrival: Optional[str] = None
+    departure: Optional[PositiveInt] = None
+    arrival: Optional[PositiveInt] = None
     back_travel: Optional[bool] = None
 
 class Travel(TravelBase):
