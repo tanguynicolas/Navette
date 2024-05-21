@@ -18,6 +18,7 @@ class StopBase(BaseModel):
     picture: Optional[str] = None
     open_at: Optional[time] = None
     close_at: Optional[time] = None
+    gps: Optional[str] = None
 
 class StopCreate(StopBase):
     pass

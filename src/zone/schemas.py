@@ -15,6 +15,7 @@ class ZoneBase(BaseModel):
     name: str
     description: Optional[str] = None
     picture: Optional[str] = None
+    gps: Optional[str] = None
 
 class ZoneCreate(ZoneBase):
     pass

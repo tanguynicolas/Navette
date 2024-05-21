@@ -28,6 +28,7 @@ class Zone(Base):
     name: Mapped[str] = mapped_column(String(50))
     description: Mapped[Optional[str]] = mapped_column(String(150))
     picture: Mapped[Optional[str]] = mapped_column(String(2048))
+    gps: Mapped[Optional[str]] = mapped_column()
 
     id_city = mapped_column(ForeignKey("city.id"))
 
@@ -44,6 +45,7 @@ class Stop(Base):
     mac_beacon: Mapped[Optional[str]] = mapped_column(String(17), unique=True)
     open_at: Mapped[Optional[time]] = mapped_column()
     close_at: Mapped[Optional[time]] = mapped_column()
+    gps: Mapped[Optional[str]] = mapped_column()
 
     id_city = mapped_column(ForeignKey("city.id"))
 

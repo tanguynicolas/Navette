@@ -22,6 +22,7 @@ def insert_zone(db: Session, city_id: int, zone: schemas.ZoneCreate):
     db_zone = models.Zone(name=zone.name,
                           description=zone.description,
                           picture=zone.picture,
+                          gps=zone.gps,
                           id_city=city_id)
     db.add(db_zone)
     db.commit()
