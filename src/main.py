@@ -11,7 +11,10 @@ from .stop.router import router as stop
 from .user.router import router as user
 from .travel.router import router as travel
 
-app = FastAPI(title="Navette")
+app = FastAPI(
+    title="Navette",
+    description="API for a university carpooling application called Navette. Project for University of Picardie (Amiens, France) - Master Degree."
+)
 
 @app.get("/", include_in_schema=False)
 async def docs_redirect():
