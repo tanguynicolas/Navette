@@ -13,13 +13,6 @@ from .travel.router import router as travel
 
 app = FastAPI(title="Navette")
 
-app.include_router(auth, prefix="/api/v1/auth", tags=["auth"])
-app.include_router(city, prefix="/api/v1/city", tags=["city"])
-app.include_router(zone, prefix="/api/v1/city/{city_id}/zone", tags=["zone"])
-app.include_router(stop, prefix="/api/v1/city/{city_id}/stop", tags=["stop"])
-app.include_router(user, prefix="/api/v1/user", tags=["user"])
-app.include_router(travel, prefix="/api/v1/travel", tags=["travel"])
-
 @app.get("/", include_in_schema=False)
 async def docs_redirect():
     return RedirectResponse(url='/docs')
@@ -37,3 +30,10 @@ def info():
         "Database host": database_settings.hostname,
         "Database username": database_settings.username
     }
+
+app.include_router(auth, prefix="/api/v1/auth", tags=["auth"])
+app.include_router(city, prefix="/api/v1/city", tags=["city"])
+app.include_router(zone, prefix="/api/v1/city/{city_id}/zone", tags=["zone"])
+app.include_router(stop, prefix="/api/v1/city/{city_id}/stop", tags=["stop"])
+app.include_router(user, prefix="/api/v1/user", tags=["user"])
+app.include_router(travel, prefix="/api/v1/travel", tags=["travel"])
