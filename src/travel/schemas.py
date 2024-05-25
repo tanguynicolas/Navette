@@ -14,6 +14,8 @@ class UserList(BaseModel):
 
 class TravelList(BaseModel):
     id: PositiveInt
+    departure: PositiveInt
+    arrival: PositiveInt
 
 class TravelBase(BaseModel):
     departure: PositiveInt
