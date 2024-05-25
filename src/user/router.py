@@ -98,3 +98,42 @@ def remove_user(user_id: int, db: Session = Depends(get_db)):
     db_user = service.select_user_by_id(db=db, id=user_id)
     exceptions.check_user_id(id=user_id, user=db_user)
     return service.delete_user(db=db, id=user_id)
+
+
+# Special endpoints
+
+from typing import List
+
+from fastapi import HTTPException
+
+@router.get("/{user_id}/history")#, response_model=List[Travel])
+def get_user_travel_history(
+    user_id: int,
+    back_travel: bool = True,
+    outgoing_travel: bool = True,
+    is_finished: bool | None = None,
+    db: Session = Depends(get_db)
+):
+    user = db.get(models.User, user_id)
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+
+    query = db.query(models.Travel).join(models.UserTravel).filter(models.UserTravel.user_id == user_id)
+
+    if back_travel and outgoing_travel:
+        query = query.filter(models.Travel.back_travel.in_([True, False]))
+    elif back_travel:
+        query = query.filter(models.Travel.back_travel == True)
+    elif outgoing_travel:
+        query = query.filter(models.Travel.back_travel == False)
+    else:
+        return []
+
+    if is_finished is not None:
+        if is_finished:
+            query = query.filter(models.Travel.finished_at != None)
+        else:
+            query = query.filter(models.Travel.finished_at == None)
+
+    travels = query.all()
+    return travels
