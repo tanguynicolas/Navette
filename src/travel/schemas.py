@@ -39,3 +39,13 @@ class Travel(TravelBase):
     model_config = ConfigDict(
         from_attributes=True
     )
+
+class TravelHistory(TravelBase):
+    id: PositiveInt
+    started_at: datetime
+    finished_at: Optional[datetime] = None
+    is_driver: bool
+
+    model_config = ConfigDict(
+        from_attributes=True
+    )

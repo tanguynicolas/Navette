@@ -11,6 +11,7 @@ from .. import models
 from . import service, schemas, exceptions
 from ..city.service import select_city_by_id
 from ..city.exceptions import check_city_id
+from ..travel.schemas import TravelHistory
 
 models.Base.metadata.create_all(bind=engine)
 
@@ -106,7 +107,7 @@ from typing import List
 
 from fastapi import HTTPException
 
-@router.get("/{user_id}/history")#, response_model=List[Travel])
+@router.get("/{user_id}/history", response_model=List[TravelHistory])
 def get_user_travel_history(
     user_id: int,
     back_travel: bool = True,
@@ -118,7 +119,7 @@ def get_user_travel_history(
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
 
-    query = db.query(models.Travel).join(models.UserTravel).filter(models.UserTravel.user_id == user_id)
+    query = db.query(models.Travel, models.UserTravel.is_driver).join(models.UserTravel).filter(models.UserTravel.user_id == user_id)
 
     if back_travel and outgoing_travel:
         query = query.filter(models.Travel.back_travel.in_([True, False]))
@@ -135,5 +136,14 @@ def get_user_travel_history(
         else:
             query = query.filter(models.Travel.finished_at == None)
 
-    travels = query.all()
+    results = query.all()
+    travels = [TravelHistory(
+        id=travel.id,
+        started_at=travel.started_at,
+        finished_at=travel.finished_at,
+        departure=travel.departure,
+        arrival=travel.arrival,
+        back_travel=travel.back_travel,
+        is_driver=is_driver
+    ) for travel, is_driver in results]
     return travels
