@@ -84,3 +84,42 @@ def remove_stop(city_id: int, stop_id: int, db: Session = Depends(get_db)):
     db_stop = service.select_stop_by_id(db=db, city_id=city_id, id=stop_id)
     exceptions.check_stop_id(city_id=city_id, id=stop_id, stop=db_stop)
     return service.delete_stop(db=db, city_id=city_id, id=stop_id)
+
+
+# Special endpoints
+
+from fastapi import HTTPException
+
+@router.post("/{stop_id}/waiting", response_model=schemas.Stop)
+def increment_waiting(city_id: int, stop_id: int, db: Session = Depends(get_db)):
+    db_city = select_city_by_id(db=db, id=city_id)
+    check_city_id(id=city_id, city=db_city)
+
+    db_stop = service.select_stop_by_id(db=db, city_id=city_id, id=stop_id)
+    exceptions.check_stop_id(city_id=city_id, id=stop_id, stop=db_stop)
+
+    # Auto heal
+    if db_stop.in_wait < 0: # type: ignore
+        db_stop.in_wait = 0 # type: ignore
+
+    db_stop.in_wait += 1 # type: ignore
+    db.commit()
+    return db_stop
+
+@router.post("/{stop_id}/stop_waiting", response_model=schemas.Stop)
+def decrement_waiting(city_id: int, stop_id: int, db: Session = Depends(get_db)):
+    db_city = select_city_by_id(db=db, id=city_id)
+    check_city_id(id=city_id, city=db_city)
+
+    db_stop = service.select_stop_by_id(db=db, city_id=city_id, id=stop_id)
+    exceptions.check_stop_id(city_id=city_id, id=stop_id, stop=db_stop)
+
+    # Auto heal
+    if db_stop.in_wait < 0: # type: ignore
+        db_stop.in_wait = 0 # type: ignore
+        return db_stop
+    
+    if db_stop.in_wait > 0: # type: ignore
+        db_stop.in_wait -= 1 # type: ignore
+    db.commit()
+    return db_stop

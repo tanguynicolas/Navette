@@ -46,6 +46,7 @@ class Stop(Base):
     open_at: Mapped[Optional[time]] = mapped_column()
     close_at: Mapped[Optional[time]] = mapped_column()
     gps: Mapped[Optional[str]] = mapped_column()
+    in_wait: Mapped[int] = mapped_column(default=0, nullable=False)
 
     id_city = mapped_column(ForeignKey("city.id"))
 

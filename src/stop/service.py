@@ -25,6 +25,7 @@ def insert_stop(db: Session, city_id: int, stop: schemas.StopCreate):
                           open_at=stop.open_at,
                           close_at=stop.close_at,
                           gps=stop.gps,
+                          in_wait=0,
                           id_city=city_id)
     db.add(db_stop)
     db.commit()

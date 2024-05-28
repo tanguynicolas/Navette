@@ -29,6 +29,7 @@ class StopUpdate(StopCreate):
 
 class Stop(StopBase):
     id: PositiveInt
+    in_wait: int
 
     model_config = ConfigDict(
         from_attributes=True
