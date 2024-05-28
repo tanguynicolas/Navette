@@ -147,3 +147,25 @@ def get_user_travel_history(
         is_driver=is_driver
     ) for travel, is_driver in results]
     return travels
+
+@router.get(
+    "/{user_id}/current_travel",
+    response_model=schemas.UserCurrentTravel,
+    description="Récupère le trajet en cours d'un utilisateur. S'il est sur plusieurs trajet - ce qui ne devrait pas exister - retourne le plus récent commencé."
+)
+def get_current_travel(user_id: int, db: Session = Depends(get_db)):
+    # Vérifiez si l'utilisateur existe
+    user = db.get(models.User, user_id)
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+
+    # Trouvez le trajet le plus récent de l'utilisateur qui n'est pas terminé
+    latest_travel = db.query(models.UserTravel).join(models.Travel).filter(
+        models.UserTravel.user_id == user_id,
+        models.Travel.finished_at == None
+    ).order_by(models.Travel.started_at.desc()).first()
+
+    if not latest_travel:
+        raise HTTPException(status_code=404, detail="No current travel found")
+
+    return schemas.UserCurrentTravel(id=latest_travel.travel.id)
