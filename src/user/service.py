@@ -9,8 +9,8 @@ from .. import models
 from . import schemas
 
 def select_all_users(db: Session, skip: int = 0, limit: int = 100):
-    result = db.execute(select(models.User.id, models.User.name, models.User.email).offset(skip).limit(limit)).fetchall()
-    return [{"id": row[0], "name": row[1], "email": row[2]} for row in result]
+    result = db.execute(select(models.User.id, models.User.name, models.User.email, models.User.mac_beacon).offset(skip).limit(limit)).fetchall()
+    return [{"id": row[0], "name": row[1], "email": row[2], "mac_beacon": row[3]} for row in result]
 
 def select_user_by_id(db: Session, id: int):
     return db.get(models.User, id)

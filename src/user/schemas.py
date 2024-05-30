@@ -14,6 +14,7 @@ class UserList(BaseModel):
     id: PositiveInt
     email: EmailStr
     name: str
+    mac_beacon: Optional[str] = None
 
 class UserBase(BaseModel):
     email: EmailStr
